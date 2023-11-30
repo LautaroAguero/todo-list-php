@@ -112,36 +112,37 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.bundle.min.js"></script>     
 </body>
-<script>
+<script>   
+
     var tasks = <?php echo json_encode(array_map(function($task) {
         $taskObj = unserialize($task);
 
         $taskArray = [
-        'name' => $taskObj->getName(),
-        'type' => $taskObj->getType(),
-    ];
+            'name' => $taskObj->getName(),
+            'type' => $taskObj->getType(),
+        ];
 
-    switch ($taskObj->getType()) {
-        case 'process':
-            $taskArray['subtasks'] = $taskObj->getSubtasks();
-            break;
+        switch ($taskObj->getType()) {
+            case 'process':
+                $taskArray['subtasks'] = $taskObj->getSubtasks();
+                break;
 
-        case 'contact':
-            $taskArray['contactName'] = $taskObj->getContactName();
-            $taskArray['contactReason'] = $taskObj->getContactReason();
-            $taskArray['contactPhone'] = $taskObj->getContactPhone();
-            $taskArray['contactEmail'] = $taskObj->getContactEmail();
-            break;
+            case 'contact':
+                $taskArray['contactName'] = $taskObj->getContactName();
+                $taskArray['contactReason'] = $taskObj->getContactReason();
+                $taskArray['contactPhone'] = $taskObj->getContactPhone();
+                $taskArray['contactEmail'] = $taskObj->getContactEmail();
+                break;
 
-        case 'reminder':
-            $taskArray['reminderDescription'] = $taskObj->getReminderDescription();
-            $taskArray['reminderDateTime'] = $taskObj->getReminderDateTime();
-            break;
+            case 'reminder':
+                $taskArray['reminderDescription'] = $taskObj->getReminderDescription();
+                $taskArray['reminderDateTime'] = $taskObj->getReminderDateTime();
+                break;
 
-        // Agrega más casos aquí para otros tipos de tareas
-    }
+            // Agrega más casos aquí para otros tipos de tareas
+        }
 
-    return $taskArray;
+        return $taskArray;
         
 
     }, $tasks)); ?>;

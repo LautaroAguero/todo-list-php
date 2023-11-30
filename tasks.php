@@ -4,6 +4,8 @@
     require_once 'ProcessTask.php';
     require_once 'ReminderTask.php';
 
+    session_start();
+
     $tasks = json_decode(file_get_contents('tasks.json'), true);
     
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -24,11 +26,14 @@
             }
 
             $tasks[] = serialize($task);            
-            $json = json_encode($tasks);
+            $json = json_encode($tasks); 
+            $_SESSION['tasks'] = $tasks;                    
         } else if (isset($_POST['delete'])) {
             $task_id = $_POST['task_id'];
             deleteTask($task_id);
             $json = json_encode($tasks);
+            $_SESSION['tasks'] = $tasks;
+            setcookie('tasks', $json, time() + (86400 * 30), "/"); // 86400 = 1 day    
         }
 
         file_put_contents('tasks.json', $json);        
